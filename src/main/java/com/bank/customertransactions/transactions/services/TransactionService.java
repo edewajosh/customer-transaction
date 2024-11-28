@@ -41,12 +41,13 @@ public class TransactionService {
         //Check if account exists
         AccountDto accountDetails = fetchAccountDetails(transaction.getCreditAccount());
         LOGGER.info("Account name: {}-> A/C balance: {} {}", accountDetails.customerId(), accountDetails.currencyCode(),accountDetails.balance());
-        if(!accountDetails.currencyCode().equals(transaction.getTransactionCurrency())) {
-            LOGGER.info("Account currency code is different");
-            transaction.setStatusCode("4");
-            transaction.setStatusMessage("Transaction failed: CURRENCY MISMATCH");
-            transaction.setTransactionDate(LocalDateTime.now());
-        }else if(!Objects.equals(accountDetails.accountNumber(), transaction.getCreditAccount())){
+//        if(!accountDetails.currencyCode().equals(transaction.getTransactionCurrency())) {
+//            LOGGER.info("Account currency code is different");
+//            transaction.setStatusCode("4");
+//            transaction.setStatusMessage("Transaction failed: CURRENCY MISMATCH");
+//            transaction.setTransactionDate(LocalDateTime.now());
+//        }else
+       if(!Objects.equals(accountDetails.accountNumber(), transaction.getCreditAccount())){
             LOGGER.info("account number mismatch");
             transaction.setStatusCode("5");
             transaction.setStatusMessage("Transaction failed: ACCOUNT NOT FOUND");
@@ -92,12 +93,8 @@ public class TransactionService {
     }
 
     AccountDto fetchAccountDetails(String accountNumber) throws JsonProcessingException {
-//        TokenBody body = getAuthToken();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Authorization", body.bearer_token());
         String response = accountRestClient()
                 .get()
-//                .headers((Consumer<HttpHeaders>) headers)
                 .uri("/api/v1/customer/account/"+accountNumber)
                 .retrieve().body(String.class);
         LOGGER.info("Account response: {}", response);
@@ -107,29 +104,34 @@ public class TransactionService {
     }
 
     TokenBody getAuthToken() throws JsonProcessingException {
-        String password = "johndoe@test.com";
-        String username =  "test@123456";
+        String password = "janedoe5@test.com";
+        String username =  "Password@123";
         String loginCredentials = password + ":" + username;
         String encodedString = Base64.getEncoder().encodeToString(loginCredentials.getBytes());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + encodedString);
-        RestClient client = RestClient.builder().baseUrl("http://localhost:8080/api/v1/auth/login").build();
-        String token = client.get().headers((Consumer<HttpHeaders>)headers).retrieve().body(String.class);
+        RestClient client = RestClient.builder()
+                .defaultHeaders(httpHeaders -> {
+                    httpHeaders.set("Authorization", "Basic " + encodedString);
+                })
+                .baseUrl("http://localhost:8080/api/v1/auth/login").build();
+        String token = client.get().retrieve().body(String.class);
         LOGGER.info("Token string: {}", token);
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(token, TokenBody.class);
     }
     void updateAccountDetails(AccountDto accountDto) throws JsonProcessingException {
         String res = accountRestClient()
-                .put()
+                .get()
                 .uri("/api/v1/customer/account/"+accountDto.accountNumber())
-                .body(accountDto)
                 .retrieve().body(String.class);
         LOGGER.info("Balance update: {}", res);
     }
 
-    RestClient accountRestClient(){
-        return RestClient.builder().baseUrl("http://localhost:8080").build();
+    RestClient accountRestClient() throws JsonProcessingException {
+        TokenBody body = getAuthToken();
+        return RestClient.builder().defaultHeaders(
+                httpHeaders -> {
+                    httpHeaders.set("Authorization", "Bearer " + body.bearer_token());
+                }).baseUrl("http://localhost:8080").build();
     }
     public void sendMessage(String message, String topic) throws JsonProcessingException {
         try {

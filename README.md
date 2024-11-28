@@ -1,6 +1,12 @@
+## The application is using auth2.0 bearer token
 * Create DB ON POSTGRES
 ```CREATE DATABASE BANKING```
 * INSTALL ACTIVEMQ and run
+## CREATE USER with this credentials
+```
+password = "janedoe5@test.com";
+username =  "Password@123";
+```
 
 ### AUTH LOGIN
 ```curl --location 'http://localhost:8080/api/v1/auth/login' \
