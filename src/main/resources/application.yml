@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/banking
+    username: postgres
+    password: 10@Password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+  activemq:
+    broker-url: ${ACTIVEMQ_URL:tcp://localhost:61616}
+rsa:
+  private-key: classpath:certs/private.pem
+  public-key: classpath:certs/public.pem
