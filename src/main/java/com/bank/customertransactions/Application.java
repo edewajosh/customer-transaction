@@ -22,23 +22,24 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-//    @Bean
-//    CommandLineRunner commandLineRunner(ApplicationContext context) {
-//
-//        return args -> {
-//            Customer customer = new Customer();
-//            customer.setActive(true);
-//            customer.setEmail("johndoe2@test.com");
-//            customer.setPassword(new BCryptPasswordEncoder(10).encode("test@123456"));
-//            customer.setFirstName("John");
-//            customer.setLastName("Doe");
-//            customer.setCurrencyCode("KES");
-//            customer.setAccountNumber("123456789");
-//            customer.setAccountType("SALARY");
-//            System.out.println("Customer: " + customer);
-//
-//            Customer customer1 = usersRepo.save(customer);
-//            System.out.println("Customer created: " + customer1);
-//        };
-//    }
+    @Bean
+    CommandLineRunner commandLineRunner(ApplicationContext context) {
+
+        return args -> {
+            Customer customer = new Customer();
+            customer.setActive(true);
+            customer.setEmail("johndoe2@test.com");
+            customer.setPassword(new BCryptPasswordEncoder(10).encode("test@123456"));
+            customer.setFirstName("John");
+            customer.setLastName("Doe");
+            customer.setCurrencyCode("KES");
+            customer.setAccountNumber("113456789");
+            customer.setAccountType("SALARY");
+            customer.setBalance(10000);
+            System.out.println("Customer: " + customer);
+
+            Customer customer1 = usersRepo.save(customer);
+            System.out.println("Customer created: " + customer1);
+        };
+    }
 }

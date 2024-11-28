@@ -31,6 +31,10 @@ public class CustomerService {
         newCustomer.setEmail(customer.getEmail());
         newCustomer.setPassword(passwordEncoder.encode(customer.getPassword()));
         newCustomer.setActive(true); // This could be enabled after email verification
+        newCustomer.setBalance(customer.getBalance());
+        newCustomer.setAccountNumber(customer.getAccountNumber());
+        newCustomer.setAccountStatus(customer.getAccountStatus());
+        newCustomer.setAccountType(customer.getAccountType());
         useRepo.save(newCustomer);
         newCustomer.setPassword(null);
         return newCustomer;

@@ -28,7 +28,8 @@ public class SecurityConfig{
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
     private static final String[] WHITE_LIST_URL = {
             "api/v1/auth/**",
-            "api/v1/transactions/**"
+            "api/v1/transactions/**",
+            "api/v1/customer/**"
     };
     private final RsaKeyProperties jwtConfigProperties;
     private final UsersRepo usersRepo;

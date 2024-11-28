@@ -22,13 +22,24 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping("update")
+    @PutMapping("update")
     public ResponseEntity updateCustomerProfile(@RequestBody Customer customer) {
         logger.info("Request from: {}",customer.toString());
         Customer res = customerService.updateCustomerProfile(customer);
         logger.info("Response: {}",res.getId());
         if(res.getId() != null) {
             return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping
+    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
+        logger.info("Request from: {}",customer.toString());
+        Customer res = customerService.createCustomer(customer);
+        logger.info("Response: {}",res.getId());
+        if(res.getId() != null) {
+            return new ResponseEntity<>(res, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
