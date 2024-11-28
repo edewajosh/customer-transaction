@@ -35,6 +35,7 @@ public class CustomerService {
         newCustomer.setAccountNumber(customer.getAccountNumber());
         newCustomer.setAccountStatus(customer.getAccountStatus());
         newCustomer.setAccountType(customer.getAccountType());
+        newCustomer.setCurrencyCode(customer.getCurrencyCode());
         useRepo.save(newCustomer);
         newCustomer.setPassword(null);
         return newCustomer;

@@ -13,6 +13,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.Date;
+import java.util.UUID;
+
 @SpringBootApplication
 @EnableConfigurationProperties({RsaKeyProperties.class, ActiveMq.class})
 public class Application {
@@ -28,12 +31,12 @@ public class Application {
         return args -> {
             Customer customer = new Customer();
             customer.setActive(true);
-            customer.setEmail("johndoe2@test.com");
+            customer.setEmail(UUID.randomUUID().toString()+"@test.com");
             customer.setPassword(new BCryptPasswordEncoder(10).encode("test@123456"));
             customer.setFirstName("John");
             customer.setLastName("Doe");
             customer.setCurrencyCode("KES");
-            customer.setAccountNumber("113456789");
+            customer.setAccountNumber("123445566");
             customer.setAccountType("SALARY");
             customer.setBalance(10000);
             System.out.println("Customer: " + customer);

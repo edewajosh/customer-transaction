@@ -37,6 +37,6 @@ curl --location 'localhost:8080/api/v1/transactions/deposit' \
     "description": "HGDFFSD GGFDS",
     "transactionType": "ACU",
     "creditAccount": "123456789",
-    "transactionCurrency": "KES"
+    "currencyCode": "KES"
 }'
 ```
